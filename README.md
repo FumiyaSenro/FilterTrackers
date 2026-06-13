@@ -1,4 +1,4 @@
-[中文](https://github.com/FumiyaSenro/FilterTrackers/blob/master/README-ZH.md) | **English**
+[中文](./README-ZH.md) | **English**
 
 # FilterTrackers (Auto-Filtered)
 
