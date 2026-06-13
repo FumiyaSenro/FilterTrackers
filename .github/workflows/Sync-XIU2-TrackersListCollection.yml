@@ -25,7 +25,7 @@ jobs:
     steps:
       - name: Checkout
         # 检出仓库内容。后续所有文件读写都基于这里的工作目录。
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
         with:
           # 拉取完整历史，方便后面 git commit / git push 更稳定。
           fetch-depth: 0
@@ -36,19 +36,20 @@ jobs:
           curl -sSL "https://cf.trackerslist.com/best.txt" -o raw.txt
           
           echo "正在过滤黑名单域名..."
-          # 【核心过滤区】以后想拉黑新域名，加在 | 后面即可，例如 "qu\.ax|bad\.com"
-          grep -v -E "qu\.ax" raw.txt > clean.txt
+          # 【核心过滤区】以后想拉黑新域名，加在 | 后面即可
+          # 加 || true 防止 grep 匹配不到内容时返回非 0 退出码导致脚本中断
+          grep -v -E "qu\.ax" raw.txt > clean.txt || true
           
-          # 【修改点】将多个连续空行压缩为单个空行，保留原版排版格式
-          # 1. 将所有纯空白行转换为标准空行
-          # 2. 将相邻的空行合并为一个
-          sed -i -e '/^[[:space:]]*$/{ N; /^\n[[:space:]]*$/D; }' clean.txt
+          echo "正在生成带空行的排版格式..."
+          # 1. 先删除所有空行，保证数据绝对干净
+          # 2. 在每一行的行尾($)追加一个换行符(\n)，实现每个链接空一行的效果
+          sed '/^[[:space:]]*$/d' clean.txt | sed 's/$/\n/g' > trackers.txt
           
-          # 替换旧文件
-          mv clean.txt trackers.txt
-          rm raw.txt
+          rm raw.txt clean.txt
           
-          echo "过滤完成！当前剩余 Tracker 数量：$(wc -l < trackers.txt)"
+          # 统计真实的 Tracker 数量（排除掉为了排版而产生的空行）
+          TRACKER_COUNT=$(grep -c -v '^\s*$' trackers.txt || echo "0")
+          echo "过滤完成！当前剩余 Tracker 数量：${TRACKER_COUNT}"
 
       - name: Update README and export stats
         # 更新 README 文件并统计数据
@@ -59,7 +60,7 @@ jobs:
           # 统一使用北京时间作为 README 中展示的日期。
           UPDATE=$(TZ='Asia/Shanghai' date '+%Y-%m-%d')
           # 统计输出文件中的有效 tracker 数量。
-          Filter_NUM=$(grep -v '^\s*$' trackers.txt | wc -l)
+          Filter_NUM=$(grep -c -v '^\s*$' trackers.txt || echo "0")
 
           # 更新英文 README。
           sed -i -E "s|^### Updated: .*|### Updated: ${UPDATE}|" README.md
