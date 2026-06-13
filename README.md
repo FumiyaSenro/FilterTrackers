@@ -12,7 +12,7 @@ Special thanks to the original author for their continuous maintenance and hard 
 
 ### Updated：2026-06-13
 
-- **Filtered Tracker list：（73 trackers）
+- **Filtered Tracker list：**（73 trackers）
  _**https://fumiyasenro.github.io/FilterTrackers/trackers.txt**_
 
 ### ⚠️ Disclaimer

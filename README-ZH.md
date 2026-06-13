@@ -11,7 +11,8 @@
 感谢原作者的辛勤维护。
 
 ### 更新时间：2026-06-13
-- **过滤列表：（73个）
+
+- **过滤列表：**（73个）
  _**https://fumiyasenro.github.io/FilterTrackers/trackers.txt**_
 
 ### ⚠️ 免责声明
