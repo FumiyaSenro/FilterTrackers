@@ -1,4 +1,4 @@
-**中文** | [English](#readme)
+**中文** | [English](https://github.com/FumiyaSenro/FilterTrackers/#readme)
 
 # FilterTrackers (Auto-Filtered)
 
