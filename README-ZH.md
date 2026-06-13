@@ -1,4 +1,4 @@
-**中文** | [English](https://github.com/FumiyaSenro/FilterTrackers/#readme)
+**中文** | [English](./README.md)
 
 # FilterTrackers (Auto-Filtered)
 
@@ -12,7 +12,7 @@
 
 ### 更新时间：2026-06-13
 - **过滤列表：（73个）
- _**https://github.com/FumiyaSenro/FilterTrackers**_
+ _**https://fumiyasenro.github.io/FilterTrackers/trackers.txt**_
 
 ### ⚠️ 免责声明
 

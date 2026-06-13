@@ -36,12 +36,13 @@ jobs:
           curl -sSL "https://cf.trackerslist.com/best.txt" -o raw.txt
           
           echo "正在过滤黑名单域名..."
-
           # 【核心过滤区】以后想拉黑新域名，加在 | 后面即可，例如 "qu\.ax|bad\.com"
           grep -v -E "qu\.ax" raw.txt > clean.txt
           
-          # 清理多余的空行
-          sed -i '/^[[:space:]]*$/d' clean.txt
+          # 【修改点】将多个连续空行压缩为单个空行，保留原版排版格式
+          # 1. 将所有纯空白行转换为标准空行
+          # 2. 将相邻的空行合并为一个
+          sed -i -e '/^[[:space:]]*$/{ N; /^\n[[:space:]]*$/D; }' clean.txt
           
           # 替换旧文件
           mv clean.txt trackers.txt
