@@ -1,0 +1,95 @@
+name: Sync and Filter Trackers
+
+on:
+  schedule:
+    # 每天 UTC 时间 1:00运行 (对应北京时间 9:00)
+    - cron: '0 1 * * *'
+  workflow_dispatch: # 允许手动点击按钮立刻触发更新
+
+permissions:
+  # 允许工作流把生成结果提交回当前仓库。
+  contents: write
+
+concurrency:
+  # 避免同一工作流并发执行，导致互相覆盖提交。
+  group: update-trackers-optimized
+  # false 表示不取消已在运行的任务，新任务排队等待。
+  cancel-in-progress: false
+
+jobs:
+  build:
+  # 使用 GitHub 提供的 Ubuntu 运行环境。
+    runs-on: ubuntu-latest
+    # 给整个任务一个总超时，防止外部源异常时无限挂住。
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        # 检出仓库内容。后续所有文件读写都基于这里的工作目录。
+        uses: actions/checkout@v5
+        with:
+          # 拉取完整历史，方便后面 git commit / git push 更稳定。
+          fetch-depth: 0
+
+      - name: Download and Filter
+        run: |
+          echo "正在下载 XIU2 的 best.txt..."
+          curl -sSL "https://cf.trackerslist.com/best.txt" -o raw.txt
+          
+          echo "正在过滤黑名单域名..."
+
+          # 【核心过滤区】以后想拉黑新域名，加在 | 后面即可，例如 "qu\.ax|bad\.com"
+          grep -v -E "qu\.ax" raw.txt > clean.txt
+          
+          # 清理多余的空行
+          sed -i '/^[[:space:]]*$/d' clean.txt
+          
+          # 替换旧文件
+          mv clean.txt trackers.txt
+          rm raw.txt
+          
+          echo "过滤完成！当前剩余 Tracker 数量：$(wc -l < trackers.txt)"
+
+      - name: Update README and export stats
+        # 更新 README 文件并统计数据
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+
+          # 统一使用北京时间作为 README 中展示的日期。
+          UPDATE=$(TZ='Asia/Shanghai' date '+%Y-%m-%d')
+          # 统计输出文件中的有效 tracker 数量。
+          Filter_NUM=$(grep -v '^\s*$' trackers.txt | wc -l)
+
+          # 更新英文 README。
+          sed -i -E "s|^### Updated: .*|### Updated: ${UPDATE}|" README.md
+          sed -i -E "s|^- \*\*Filtered Tracker list:\*\* \([0-9]+ trackers\).*$|- **Filtered Tracker list:** (${Filter_NUM} trackers)  |" README.md
+
+          # 更新中文 README。
+          sed -i -E "s|^### 更新时间: .*|### 更新时间: ${UPDATE}|" README-ZH.md
+          sed -i -E "s|^- \*\*过滤列表：\*\*\([0-9]+ 个\).*$|- **过滤列表：**(${Filter_NUM} 个)  |" README-ZH.md
+
+          echo "[$(TZ='Asia/Shanghai' date '+%Y/%m/%d %H:%M:%S')] 过滤数量：${Filter_NUM} 个。"
+
+      - name: Commit and push when changed
+        # 如有修改则提交推送
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+
+          # 设置提交身份为 GitHub Actions 的机器人账号。
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # 只有存在文件变更时才提交，避免空提交失败。
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          # 提交并推送到当前触发运行的分支。
+          UPDATE=$(TZ='Asia/Shanghai' date '+%Y-%m-%d')
+          git commit -m "${UPDATE}"
+
+          # 1) 推送到 GitHub（origin）
+          git push origin "HEAD:${GITHUB_REF_NAME}"

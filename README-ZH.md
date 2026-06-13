@@ -10,6 +10,10 @@
 👉 [TrackersListCollection](https://github.com/XIU2/TrackersListCollection)
 感谢原作者的辛勤维护。
 
+### 更新时间：2026-06-13
+- **过滤列表：（73个）
+ _**https://github.com/FumiyaSenro/FilterTrackers**_
+
 ### ⚠️ 免责声明
 
 1. **内容性质**：本仓库仅包含纯文本的 Tracker 服务器地址列表，**不存储、不提供、不索引任何受版权保护的媒体文件**（如种子、磁力链接、影视音乐等）。

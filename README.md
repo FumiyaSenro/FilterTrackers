@@ -10,6 +10,11 @@ The source tracker lists used in this project are fetched from the open-source p
 👉 [TrackersListCollection](https://github.com/XIU2/TrackersListCollection)
 Special thanks to the original author for their continuous maintenance and hard work.
 
+### Updated：2026-06-13
+
+- **Filtered Tracker list：（73 trackers）
+ _**https://github.com/FumiyaSenro/FilterTrackers**_
+
 ### ⚠️ Disclaimer
 
 1. **Nature of Content**: This repository solely contains plain text tracker server addresses. It **does not store, host, provide, or index any copyrighted media files** (such as .torrent files, magnet links, movies, music, etc.).
