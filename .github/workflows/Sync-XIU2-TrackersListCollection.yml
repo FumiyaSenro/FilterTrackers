@@ -62,13 +62,13 @@ jobs:
           # 统计输出文件中的有效 tracker 数量。
           Filter_NUM=$(grep -c -v '^\s*$' trackers.txt || echo "0")
 
-          # 更新英文 README。
-          sed -i -E "s|^### Updated: .*|### Updated: ${UPDATE}|" README.md
-          sed -i -E "s|^- \*\*Filtered Tracker list:\*\* \([0-9]+ trackers\).*$|- **Filtered Tracker list:** (${Filter_NUM} trackers)  |" README.md
+          # 更新英文 README
+          sed -i -E "s|^### Updated：.*|### Updated：${UPDATE}|" README.md
+          sed -i -E "s|^- \*\*Filtered Tracker list：\*\*（[0-9]+ trackers）.*$|- **Filtered Tracker list：**（${Filter_NUM} trackers）|" README.md
 
-          # 更新中文 README。
-          sed -i -E "s|^### 更新时间: .*|### 更新时间: ${UPDATE}|" README-ZH.md
-          sed -i -E "s|^- \*\*过滤列表：\*\*\([0-9]+ 个\).*$|- **过滤列表：**(${Filter_NUM} 个)  |" README-ZH.md
+          # 更新中文 README
+          sed -i -E "s|^### 更新时间：.*|### 更新时间：${UPDATE}|" README-ZH.md
+          sed -i -E "s|^- \*\*过滤列表：\*\*（[0-9]+个）.*$|- **过滤列表：**（${Filter_NUM}个）|" README-ZH.md
 
           echo "[$(TZ='Asia/Shanghai' date '+%Y/%m/%d %H:%M:%S')] 过滤数量：${Filter_NUM} 个。"
 
