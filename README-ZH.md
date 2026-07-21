@@ -10,7 +10,7 @@
 👉 [TrackersListCollection](https://github.com/XIU2/TrackersListCollection)
 感谢原作者的辛勤维护。
 
-### 更新时间：2026-07-20
+### 更新时间：2026-07-21
 
 - **过滤列表：**（74个）
  _**https://fumiyasenro.github.io/FilterTrackers/trackers.txt**_
