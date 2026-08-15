@@ -10,7 +10,7 @@ The source tracker lists used in this project are fetched from the open-source p
 👉 [TrackersListCollection](https://github.com/XIU2/TrackersListCollection)
 Special thanks to the original author for their continuous maintenance and hard work.
 
-### Updated：2026-08-14
+### Updated：2026-08-15
 
 - **Filtered Tracker list：**（71 trackers）
  _**https://fumiyasenro.github.io/FilterTrackers/trackers.txt**_
