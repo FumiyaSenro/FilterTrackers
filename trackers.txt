@@ -12,8 +12,6 @@ http://torrentsmd.com:8080/announce
 
 http://tracker.dhitechnical.com:6969/announce
 
-http://tracker.mywaifu.best:6969/announce
-
 http://tracker.renfei.net:8080/announce
 
 http://tracker.waaa.moe:6969/announce
